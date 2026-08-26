@@ -1,0 +1,13 @@
+
+# Python generated files
+__pycache__/
+*.py[cod]
+.venv/
+
+# Generated deployment manifests
+manifests/*.json
+manifests/*.yaml
+!manifests/.gitkeep
+
+# Local configuration overrides holding real environment identifiers
+config/*.local.yaml

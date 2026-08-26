@@ -1,0 +1,14 @@
+{
+  "type": "record",
+  "name": "DemoOutput",
+  "namespace": "com.example.flink.demo",
+  "fields": [
+    {"name": "event_id", "type": "string"},
+    {"name": "event_type", "type": "string"},
+    {"name": "payload", "type": ["null", "string"], "default": null},
+    {
+      "name": "event_ts",
+      "type": {"type": "long", "logicalType": "timestamp-millis"}
+    }
+  ]
+}

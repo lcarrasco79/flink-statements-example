@@ -1,0 +1,33 @@
+name: Validate Flink pipeline
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+# Read-only: this workflow must never call Confluent or change resources.
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # Exit code 5 is "no tests collected". tests/ is still a placeholder, so
+      # tolerate it rather than failing every PR. Remove the guard once the
+      # suite is written.
+      - name: Run tests
+        run: pytest -q || [ $? -eq 5 ]
+
+      - name: Validate pipeline configuration
+        run: python -m adapter.cli validate --config config/demo-dev.yaml

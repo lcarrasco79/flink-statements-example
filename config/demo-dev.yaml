@@ -1,0 +1,63 @@
+# Example environment configuration.
+#
+# Every `<...>` value is a placeholder: replace it with the identifiers for
+# your own Confluent Cloud environment before running the adapter. Nothing in
+# this file is a secret — credentials are read from FLINK_API_KEY and
+# FLINK_API_SECRET in the environment and never live in configuration.
+#
+# To keep your live values out of version control, copy this file to
+# `config/demo-dev.local.yaml` (gitignored) and pass it with `--config`.
+
+environment_name: demo-dev
+
+flink:
+  # Confluent Cloud organization UUID: `confluent organization list`
+  organization_id: <your-organization-id>
+  # Environment ID, e.g. env-xxxxxx: `confluent environment list`
+  environment_id: <your-environment-id>
+  cloud_provider: aws
+  cloud_region: us-east-2
+  # Kafka cluster ID, e.g. lkc-xxxxxxx: `confluent kafka cluster list`
+  cloud_cluster_id: <your-cluster-id>
+  # Flink compute pool ID, e.g. lfcp-xxxxxxx: `confluent flink compute-pool list`
+  compute_pool_id: <your-compute-pool-id>
+  # Catalog is the environment display name; database is the cluster display name.
+  catalog: <your-environment-name>
+  database: <your-cluster-name>
+  # Service account the statement runs as, e.g. sa-xxxxxxx: `confluent iam service-account list`
+  principal_id: <your-service-account-id>
+
+schema_registry:
+  input_subject: flink-demo-input-value
+  output_subject: flink-demo-output-value
+  left_subject: flink-demo-left-value
+  right_subject: flink-demo-right-value
+  stateful_output_subject: flink-demo-stateful-output-value
+  compatibility: BACKWARD
+
+pipelines:
+  basic:
+    statement_name: demo-basic-pipeline
+    sql_file: sql/basic/pipeline.sql
+    input_topic: flink-demo-input
+    output_topic: flink-demo-output
+    input_schema: schemas/basic/input.avsc
+    output_schema: schemas/basic/output.avsc
+
+  stateful:
+    statement_name: demo-stateful-pipeline
+    sql_file: sql/stateful/pipeline.sql
+    left_topic: flink-demo-left
+    right_topic: flink-demo-right
+    output_topic: flink-demo-stateful-output
+    left_schema: schemas/stateful/left-event.avsc
+    right_schema: schemas/stateful/right-event.avsc
+    output_schema: schemas/stateful/output.avsc
+
+policy:
+  # The adapter never creates or deletes topics; these must stay false.
+  allow_topic_create: false
+  allow_topic_delete: false
+  # Statements are always created in a stopped state and released separately.
+  create_stopped: true
+  poll_timeout_seconds: 300

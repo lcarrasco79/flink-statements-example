@@ -1,0 +1,14 @@
+{
+  "type": "record",
+  "name": "LeftEvent",
+  "namespace": "com.example.flink.stateful",
+  "fields": [
+    {"name": "join_key", "type": "string"},
+    {"name": "event_id", "type": "string"},
+    {"name": "payload", "type": ["null", "string"], "default": null},
+    {
+      "name": "event_ts",
+      "type": {"type": "long", "logicalType": "timestamp-millis"}
+    }
+  ]
+}

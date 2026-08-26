@@ -1,0 +1,16 @@
+{
+  "type": "record",
+  "name": "StatefulJoinOutput",
+  "namespace": "com.example.flink.stateful",
+  "fields": [
+    {"name": "join_key", "type": "string"},
+    {"name": "left_event_id", "type": "string"},
+    {"name": "right_event_id", "type": "string"},
+    {"name": "left_payload", "type": ["null", "string"], "default": null},
+    {"name": "right_payload", "type": ["null", "string"], "default": null},
+    {
+      "name": "joined_at",
+      "type": {"type": "long", "logicalType": "timestamp-millis"}
+    }
+  ]
+}
